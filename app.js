@@ -627,23 +627,41 @@ function updateCart() {
   }
   body.innerHTML = cart.map((item, idx) => {
     const bg = BG[item.cat] || 'esp-bg';
-    const thumbContent = item.img
-      ? '<img src="'+item.img+'" alt="'+item.name+'">'
-      : item.emoji;
+
+    // Build detail lines: size + comps, split each by comma or keep as separate lines
+    const lines = [];
+    // Tamanho vem embutido no nome entre parênteses — extraímos para detalhe
+    const sizeMatch = item.name.match(/\(([^)]+)\)$/);
+    const cleanName = sizeMatch ? item.name.replace(/\s*\([^)]+\)$/, '') : item.name;
+    if (sizeMatch) lines.push('Tamanho: ' + sizeMatch[1]);
+    if (item.comps && item.comps.length) {
+      // Split each comp as its own line
+      item.comps.forEach(c => lines.push(c));
+    }
+    // If no details at all, show the short desc
+    if (!lines.length && item.desc) {
+      // Show first 50 chars of desc
+      lines.push(item.desc.length > 55 ? item.desc.substring(0,55)+'…' : item.desc);
+    }
+
+    const detailHTML = lines.map(l => '<span class="ci-det-line">'+l+'</span>').join('');
+
+    const unitTotal = (item.unitPrice * item.qty).toFixed(2).replace('.',',');
+
     return '<div class="cart-item-row">'+
-      '<div class="ci-thumb '+bg+'">'+thumbContent+'</div>'+
+      '<div class="ci-tag '+bg+'">'+item.emoji+'</div>'+
       '<div class="ci-info">'+
-        '<div class="ci-name">'+item.name+'</div>'+
-        '<div class="ci-desc">'+item.desc+'</div>'+
-        (item.comps.length ? '<div class="ci-comps">✓ '+item.comps.join(', ')+'</div>' : '')+
+        '<span class="ci-name">'+cleanName+'</span>'+
+        '<div class="ci-details">'+detailHTML+'</div>'+
+        '<div class="ci-qty-row">'+
+          '<button class="ci-qty-btn remove" onclick="cartQty('+idx+',-1)" title="Diminuir">−</button>'+
+          '<span class="ci-qty-num">'+item.qty+'</span>'+
+          '<button class="ci-qty-btn" onclick="cartQty('+idx+',1)" title="Aumentar">+</button>'+
+        '</div>'+
       '</div>'+
       '<div class="ci-right">'+
-        '<div class="ci-price">R$ '+(item.unitPrice*item.qty).toFixed(2).replace('.',',')+'</div>'+
-        '<div class="ci-qty">'+
-          '<button class="ci-btn" onclick="cartQty('+idx+',-1)">−</button>'+
-          '<span class="ci-num">'+item.qty+'</span>'+
-          '<button class="ci-btn" onclick="cartQty('+idx+',1)">+</button>'+
-        '</div>'+
+        '<span class="ci-price">R$ '+unitTotal+'</span>'+
+        '<button class="ci-remove" onclick="cartRemove('+idx+')" title="Remover item">✕</button>'+
       '</div>'+
     '</div>';
   }).join('');
@@ -652,6 +670,10 @@ function updateCart() {
 function cartQty(idx, d) {
   cart[idx].qty += d;
   if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  updateCart();
+}
+function cartRemove(idx) {
+  cart.splice(idx, 1);
   updateCart();
 }
 function setDelivery(t) {
@@ -690,8 +712,11 @@ function sendWhatsApp() {
 
   let msg = '*🍢 Pedido — Espetinho & Açaí do Iran*\n\n*Itens:*\n';
   cart.forEach(i => {
-    msg += '• '+i.emoji+' '+i.name+' ×'+i.qty+' — R$ '+(i.unitPrice*i.qty).toFixed(2).replace('.',',')+'\n';
-    if (i.comps.length) msg += '  _Com: '+i.comps.join(', ')+'_\n';
+    const sizeMatch = i.name.match(/\(([^)]+)\)$/);
+    const cleanName = sizeMatch ? i.name.replace(/\s*\([^)]+\)$/, '') : i.name;
+    const sizeLabel = sizeMatch ? ' ('+sizeMatch[1]+')' : '';
+    msg += '• '+i.emoji+' '+cleanName+sizeLabel+' ×'+i.qty+' — R$ '+(i.unitPrice*i.qty).toFixed(2).replace('.',',')+'\n';
+    if (i.comps && i.comps.length) msg += '   _'+i.comps.join(', ')+'_\n';
   });
   msg += '\n*Total: R$ '+total.toFixed(2).replace('.',',')+' *\n';
   msg += '\n*Tipo:* '+(deliveryType==='delivery'?'🛵 Delivery':'🏃 Retirada')+'\n';
