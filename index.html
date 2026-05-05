@@ -193,10 +193,31 @@ body{
   font-size:40px;
   box-shadow:0 2px 10px rgba(0,0,0,.1);
 }
+.item-thumb-img{
+  width:82px;height:82px;border-radius:12px;flex-shrink:0;
+  overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.1);
+  background:var(--border);display:flex;align-items:center;justify-content:center;font-size:36px;
+}
+.item-thumb-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .item-thumb.esp-bg {background:linear-gradient(135deg,#FFF0E6,#FFD4B8);}
 .item-thumb.mac-bg {background:linear-gradient(135deg,#FFFCE6,#FFE8A0);}
 .item-thumb.acai-bg{background:linear-gradient(135deg,#F2EAFF,#D8C8F8);}
 .item-thumb.beb-bg {background:linear-gradient(135deg,#E6F6FF,#B8E4FF);}
+
+/* SIZE SELECTOR */
+.size-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.size-btn{
+  display:flex;flex-direction:column;align-items:center;
+  padding:10px 6px;border-radius:10px;
+  border:2px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all .14s;user-select:none;
+}
+.size-btn:hover{border-color:var(--red-mid);}
+.size-btn.selected{border-color:var(--red);background:var(--red-soft);}
+.size-label{font-size:13px;font-weight:800;color:var(--text);}
+.size-btn.selected .size-label{color:var(--red);}
+.size-price{font-size:11px;font-weight:600;color:var(--muted);margin-top:2px;}
+.size-btn.selected .size-price{color:var(--red-dark);}
 
 .item-content{flex:1;min-width:0;}
 
@@ -680,6 +701,7 @@ footer{
   <div class="cat-tabs-wrap">
     <div class="cat-tabs" id="catTabsEl">
       <button class="cat-tab active" data-sec="sec-esp">Espetinhos</button>
+      <button class="cat-tab" data-sec="sec-panq">Panquecas</button>
       <button class="cat-tab" data-sec="sec-mac">Macarronadas</button>
       <button class="cat-tab" data-sec="sec-acai">Açaí</button>
       <button class="cat-tab" data-sec="sec-beb">Bebidas</button>
@@ -703,6 +725,17 @@ footer{
       <div class="section-toggle" onclick="toggleSection('items-esp',this)">▲</div>
     </div>
     <div class="item-list section-items" id="items-esp"></div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- PANQUECAS -->
+  <div id="sec-panq">
+    <div class="section-head">
+      <div class="section-title" style="color:var(--yellow-dk)">🫔 Panquecas</div>
+      <div class="section-toggle" onclick="toggleSection('items-panq',this)">▲</div>
+    </div>
+    <div class="item-list section-items" id="items-panq"></div>
   </div>
 
   <div class="section-divider"></div>
@@ -962,13 +995,20 @@ const COMPLEMENTS={
       {id:'pimenta_e',name:'Pimenta',price:1},
     ]
   },
-  mac:{
+  panq:{
     acompanhamentos:[
-      {id:'arroz_m',name:'Arroz',price:0},
-      {id:'feijao_m',name:'Feijão',price:0},
-      {id:'vinagrete_m',name:'Vinagrete',price:0},
-      {id:'salada_m',name:'Salada verde',price:0},
+      {id:'arroz_p',name:'Arroz',price:0},
+      {id:'feijao_p',name:'Feijão',price:0},
+      {id:'salada_p',name:'Salada',price:0},
+      {id:'vinagrete_p',name:'Vinagrete',price:0},
     ],
+    acrescimos:[
+      {id:'queijo_pa',name:'Queijo extra',price:1},
+      {id:'catupiry_pa',name:'Catupiry',price:1},
+      {id:'bacon_pa',name:'Bacon',price:1},
+    ]
+  },
+  mac:{
     acrescimos:[
       {id:'queijo_m',name:'Queijo extra',price:1},
       {id:'frango_m',name:'Frango extra',price:1},
@@ -981,60 +1021,88 @@ const COMPLEMENTS={
       {id:'granola',name:'Granola',price:0},
       {id:'banana',name:'Banana',price:0},
       {id:'amendoim',name:'Amendoim',price:0},
-      {id:'pacoca',name:'Paçoca',price:0},
       {id:'leite_cond',name:'Leite condensado',price:0},
-      {id:'morango',name:'Morango',price:0},
+      {id:'leite_po',name:'Leite em pó',price:0},
+      {id:'frutas',name:'Frutas',price:0},
     ],
     acrescimos:[
       {id:'mel',name:'Mel',price:1},
       {id:'nutella',name:'Nutella',price:1},
-      {id:'granulado',name:'Granulado',price:1},
+      {id:'ovomaltine2',name:'Ovomaltine',price:1},
       {id:'tapioca',name:'Tapioca',price:1},
-      {id:'ovomaltine',name:'Ovomaltine',price:1},
+      {id:'calda',name:'Calda',price:1},
+      {id:'disquete',name:'Disquete',price:1},
     ]
   },
   beb:{}
 };
 
-/* ── MENU ── */
+/* ── MENU ──
+   Para itens com tamanhos: sizes=[{label,price}], price = menor tamanho (default)
+*/
 const MENU=[
-  {id:1,cat:'esp',name:'Espetinho de Frango',desc:'Frango marinado no tempero da casa, grelhado na brasa. Suculento e irresistível.',price:7,emoji:'🍗',badge:'hot'},
-  {id:2,cat:'esp',name:'Espetinho de Carne',desc:'Carne bovina selecionada, grelhada no ponto certo.',price:8,emoji:'🥩',badge:null},
-  {id:3,cat:'esp',name:'Espetinho Misto',desc:'Mix de frango e carne — o favorito da casa!',price:9,emoji:'🍖',badge:'hot'},
-  {id:4,cat:'esp',name:'Espetinho de Queijo',desc:'Queijo coalho grelhado, dourado por fora e derretendo por dentro.',price:7.5,emoji:'🧀',badge:null},
-  {id:5,cat:'esp',name:'Espetinho de Coração',desc:'Coração de frango marinado e grelhado. Para os apreciadores!',price:6.5,emoji:'❤️',badge:null},
-  {id:6,cat:'esp',name:'Combo 5 Espetinhos',desc:'Escolha 5 espetinhos de qualquer sabor. Melhor custo-benefício!',price:32,emoji:'🔥',badge:'new'},
-  {id:7,cat:'mac',name:'Macarronada ao Molho',desc:'Macarrão al dente com molho de tomate artesanal. Porção generosa.',price:18,emoji:'🍝',badge:null},
-  {id:8,cat:'mac',name:'Macarronada com Frango',desc:'Macarrão com frango desfiado e molho especial da casa.',price:22,emoji:'🍝',badge:'hot'},
-  {id:9,cat:'mac',name:'Macarronada Bolonhesa',desc:'Clássico molho bolonhesa com carne moída bem temperada.',price:24,emoji:'🍝',badge:null},
-  {id:10,cat:'mac',name:'Especial do Iran',desc:'Molho secreto, carne selecionada e queijo gratinado por cima.',price:28,emoji:'⭐',badge:'new'},
-  {id:11,cat:'acai',name:'Açaí 300ml',desc:'Açaí puro batido na hora. Sabor amazônico de verdade.',price:10,emoji:'🫙',badge:null},
-  {id:12,cat:'acai',name:'Açaí 500ml',desc:'Açaí 500ml — perfeito para o calor do dia.',price:15,emoji:'🫙',badge:'hot'},
-  {id:13,cat:'acai',name:'Açaí 700ml Especial',desc:'700ml com granola, banana, leite condensado e morango.',price:20,emoji:'🫙',badge:null},
-  {id:14,cat:'acai',name:'Açaí 1L Família',desc:'1 litro cremoso — para compartilhar com todos!',price:32,emoji:'🪣',badge:null},
-  {id:15,cat:'beb',name:'Refrigerante Lata',desc:'Coca-Cola, Guaraná, Fanta — sempre gelado.',price:5,emoji:'🥤',badge:null},
-  {id:16,cat:'beb',name:'Água Mineral 500ml',desc:'Água natural, bem gelada.',price:3,emoji:'💧',badge:null},
-  {id:17,cat:'beb',name:'Suco Natural',desc:'Frutas da estação batidas na hora. Caju, maracujá, acerola.',price:8,emoji:'🍹',badge:null},
+  /* ESPETINHOS */
+  {id:1,cat:'esp',name:'Espetinho de Frango',desc:'Frango marinado no tempero da casa, grelhado na brasa.',price:7,emoji:'🍗',badge:'hot',img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&q=80'},
+  {id:2,cat:'esp',name:'Espetinho de Carne',desc:'Carne bovina selecionada, grelhada no ponto certo.',price:8,emoji:'🥩',badge:null,img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=200&q=80'},
+  {id:3,cat:'esp',name:'Espetinho Misto',desc:'Mix de frango e carne — o favorito da casa!',price:9,emoji:'🍖',badge:'hot',img:'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&q=80'},
+  {id:4,cat:'esp',name:'Espetinho de Queijo',desc:'Queijo coalho grelhado, dourado por fora e derretendo por dentro.',price:7.5,emoji:'🧀',badge:null,img:'https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=200&q=80'},
+  {id:5,cat:'esp',name:'Espetinho de Coração',desc:'Coração de frango marinado e grelhado. Para os apreciadores!',price:6.5,emoji:'❤️',badge:null,img:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=200&q=80'},
+  {id:6,cat:'esp',name:'Combo 5 Espetinhos',desc:'Escolha 5 espetinhos de qualquer sabor.',price:32,emoji:'🔥',badge:'new',img:'https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=200&q=80'},
+  /* PANQUECAS */
+  {id:20,cat:'panq',name:'Panqueca de Frango',desc:'Frango temperado enrolado em massa macia, coberto com molho.',price:15,emoji:'🫔',badge:null,img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200&q=80'},
+  {id:21,cat:'panq',name:'Panqueca de Carne',desc:'Carne moída temperada na massa, com molho artesanal.',price:15,emoji:'🫔',badge:'hot',img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200&q=80'},
+  /* MACARRONADAS — tamanhos P/M/G */
+  {id:7,cat:'mac',name:'Macarronada Mista',desc:'Calabresa, toscana, presunto, queijo, carne moída, frango, mortadela, cebola, creme de leite, milho, ervilha, azeitona, orégano, parmesão e batata palha. Molho branco ou vermelho.',price:20,emoji:'🍝',badge:'hot',img:'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  {id:8,cat:'mac',name:'Macarronada de Frango',desc:'Macarrão, frango, queijo, ervilha, milho, cebola, azeitona, orégano, creme de leite, parmesão, batata palha, molho branco ou vermelho.',price:20,emoji:'🍝',badge:null,img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  {id:9,cat:'mac',name:'Macarronada de Carne',desc:'Macarrão, carne moída, queijo, milho, ervilha, azeitona, cebola, orégano, creme de leite e parmesão, molho branco ou vermelho.',price:20,emoji:'🍝',badge:null,img:'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  {id:10,cat:'mac',name:'Macarronada Nordestina',desc:'Carne de sol desfiada, queijo, cebola, milho, ervilha, azeitona, queijo coalho, creme de leite, parmesão, batata palha, molho branco ou vermelho.',price:20,emoji:'⭐',badge:'new',img:'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  {id:11,cat:'mac',name:'Macarronada Mamma',desc:'Linguiça, calabresa, carne moída, tomate picado, queijo, milho, ervilha, azeitona, parmesão, orégano, creme de leite, batata palha, molho branco ou vermelho.',price:20,emoji:'🍝',badge:null,img:'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  {id:12,cat:'mac',name:'Calabresa Apimentada',desc:'Calabresa apimentada, macarrão, calabresa, pimenta, queijo, carne moída, cebola, creme de leite, milho, ervilha, azeitona, orégano, batata palha, molho branco ou vermelho.',price:20,emoji:'🌶️',badge:null,img:'https://images.unsplash.com/photo-1555949258-eb67b1ef0ceb?w=200&q=80',sizes:[{label:'P',price:20},{label:'M',price:25},{label:'G',price:35}]},
+  /* AÇAÍ — tamanhos em ml */
+  {id:30,cat:'acai',name:'Quero Açaí Tradicional',desc:'Açaí, frutas, granola, leite condensado, leite em pó e amendoim.',price:10,emoji:'🫙',badge:'hot',img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:31,cat:'acai',name:'Quero Açaí Kids',desc:'Açaí, frutas, leite condensado, confete, tubinho, wafer e calda.',price:10,emoji:'🍨',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:32,cat:'acai',name:'Quero Açaí Ninho',desc:'Açaí, leite em pó Ninho, frutas e amendoim.',price:10,emoji:'🫙',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:33,cat:'acai',name:'Quero Açaí Crocante',desc:'Açaí, frutas, ovomaltine, leite em pó, flocos e chocobol.',price:10,emoji:'🫙',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:34,cat:'acai',name:'Quero Açaí Fit',desc:'Açaí, mel, frutas, granola e aveia.',price:10,emoji:'💪',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:35,cat:'acai',name:'Quero Açaí Chócolatra',desc:'Açaí, calda, frutas, ovomaltine, disquete, chocolate em barra e leite condensado.',price:10,emoji:'🍫',badge:'hot',img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:36,cat:'acai',name:'Quero Açaí Arretado',desc:'Açaí, leite condensado, farinha de puba e frutas.',price:10,emoji:'🫙',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:37,cat:'acai',name:'Quero Açaí Afrodisíaco',desc:'Açaí, amendoim, guaraná da Amazônia e granola.',price:10,emoji:'🌿',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  {id:38,cat:'acai',name:'Quero Açaí Paraense',desc:'Açaí, leite condensado e farinha.',price:10,emoji:'🫙',badge:null,img:'https://images.unsplash.com/photo-1590779033100-9f60a05a013d?w=200&q=80',sizes:[{label:'300ml',price:10},{label:'400ml',price:12},{label:'500ml',price:15}]},
+  /* BEBIDAS */
+  {id:50,cat:'beb',name:'Suco de Laranja',desc:'400ml — R$9 · Jarra 1L — R$35. Suco natural batido na hora.',price:9,emoji:'🍊',badge:null,img:'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=200&q=80',sizes:[{label:'400ml',price:9},{label:'Jarra 1L',price:35}]},
+  {id:51,cat:'beb',name:'Suco de Bacuri',desc:'400ml — R$9 · Jarra 1L — R$35. Fruta amazônica cremosa.',price:9,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&q=80',sizes:[{label:'400ml',price:9},{label:'Jarra 1L',price:35}]},
+  {id:52,cat:'beb',name:'Suco de Maracujá',desc:'400ml — R$9 · Jarra 1L — R$35.',price:9,emoji:'🍹',badge:'hot',img:'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=200&q=80',sizes:[{label:'400ml',price:9},{label:'Jarra 1L',price:35}]},
+  {id:53,cat:'beb',name:'Suco de Cajá',desc:'400ml — R$9 · Jarra 1L — R$35.',price:9,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1619546952812-520e98064a52?w=200&q=80',sizes:[{label:'400ml',price:9},{label:'Jarra 1L',price:35}]},
+  {id:54,cat:'beb',name:'Suco de Goiaba',desc:'400ml — R$7 · Jarra 1L — R$27.',price:7,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1619546952812-520e98064a52?w=200&q=80',sizes:[{label:'400ml',price:7},{label:'Jarra 1L',price:27}]},
+  {id:55,cat:'beb',name:'Suco de Acerola',desc:'400ml — R$7 · Jarra 1L — R$27.',price:7,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&q=80',sizes:[{label:'400ml',price:7},{label:'Jarra 1L',price:27}]},
+  {id:56,cat:'beb',name:'Suco de Tamarindo',desc:'400ml — R$7 · Jarra 1L — R$27.',price:7,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=200&q=80',sizes:[{label:'400ml',price:7},{label:'Jarra 1L',price:27}]},
+  {id:57,cat:'beb',name:'Suco de Graviola',desc:'400ml — R$7 · Jarra 1L — R$27.',price:7,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1619546952812-520e98064a52?w=200&q=80',sizes:[{label:'400ml',price:7},{label:'Jarra 1L',price:27}]},
+  {id:58,cat:'beb',name:'Suco de Caju',desc:'400ml — R$7 · Jarra 1L — R$27.',price:7,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=200&q=80',sizes:[{label:'400ml',price:7},{label:'Jarra 1L',price:27}]},
+  {id:59,cat:'beb',name:'Suco de Cupuaçu',desc:'400ml — R$9 · Jarra 1L — R$35.',price:9,emoji:'🍹',badge:null,img:'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=200&q=80',sizes:[{label:'400ml',price:9},{label:'Jarra 1L',price:35}]},
 ];
 
-const BG={esp:'esp-bg',mac:'mac-bg',acai:'acai-bg',beb:'beb-bg'};
+const BG={esp:'esp-bg',panq:'mac-bg',mac:'mac-bg',acai:'acai-bg',beb:'beb-bg'};
+const PHOTOS={esp:'esp-bg',panq:'mac-bg',mac:'mac-bg',acai:'acai-bg',beb:'beb-bg'};
 
 /* ── RENDER MENU ── */
 function renderMenu(){
-  const map={esp:'items-esp',mac:'items-mac',acai:'items-acai',beb:'items-beb'};
+  const map={esp:'items-esp',panq:'items-panq',mac:'items-mac',acai:'items-acai',beb:'items-beb'};
   Object.entries(map).forEach(([cat,listId])=>{
+    const el=document.getElementById(listId);
+    if(!el)return;
     const items=MENU.filter(i=>i.cat===cat);
-    document.getElementById(listId).innerHTML=items.map(item=>{
+    el.innerHTML=items.map(item=>{
       const bdg=item.badge==='hot'?'<span class="ibadge ibadge-hot">Popular</span>':
                item.badge==='new'?'<span class="ibadge ibadge-new">Novidade</span>':'';
+      const priceLabel=item.sizes?'A partir de R$ '+item.sizes[0].price.toFixed(2).replace('.',','):'R$ '+item.price.toFixed(2).replace('.',',');
       return '<div class="item-card" onclick="openModal('+item.id+')">'+
-        '<div class="item-thumb '+BG[cat]+'">'+item.emoji+'</div>'+
+        '<div class="item-thumb-img"><img src="'+item.img+'" alt="'+item.name+'" loading="lazy" onerror="this.parentElement.innerHTML=\''+item.emoji+'\'"></div>'+
         '<div class="item-content">'+
           (bdg?'<div class="item-badge-row">'+bdg+'</div>':'')+
           '<div class="item-name">'+item.name+'</div>'+
           '<div class="item-desc">'+item.desc+'</div>'+
           '<div class="item-price-row">'+
-            '<div class="item-price">R$ '+item.price.toFixed(2).replace('.',',')+'</div>'+
+            '<div class="item-price">'+priceLabel+'</div>'+
             '<button class="item-add-btn" onclick="event.stopPropagation();openModal('+item.id+')">+</button>'+
           '</div>'+
         '</div>'+
@@ -1060,20 +1128,46 @@ document.getElementById('catTabsEl').addEventListener('click',function(e){
 });
 
 /* ── MODAL ── */
-let modalItem=null,modalQty=1,selectedComps={};
+let modalItem=null,modalQty=1,selectedComps={},selectedSize=null;
 
 function openModal(id){
   const item=MENU.find(i=>i.id===id);
   if(!item)return;
   modalItem=item;modalQty=1;selectedComps={};
-  document.getElementById('mEmoji').textContent=item.emoji;
-  document.getElementById('mHero').className='modal-hero '+BG[item.cat];
+  selectedSize=item.sizes?item.sizes[0]:null;
+
+  // hero: use real photo if available
+  const heroEl=document.getElementById('mHero');
+  heroEl.className='modal-hero '+BG[item.cat];
+  if(item.img){
+    heroEl.style.backgroundImage='url('+item.img+')';
+    heroEl.style.backgroundSize='cover';
+    heroEl.style.backgroundPosition='center';
+    document.getElementById('mEmoji').textContent='';
+  } else {
+    heroEl.style.backgroundImage='';
+    document.getElementById('mEmoji').textContent=item.emoji;
+  }
+
   document.getElementById('mName').textContent=item.name;
   document.getElementById('mDesc').textContent=item.desc;
-  document.getElementById('mPrice').textContent='R$ '+item.price.toFixed(2).replace('.',',');
   document.getElementById('qtyDisp').textContent=1;
-  const C=COMPLEMENTS[item.cat]||{};
+
   let html='';
+
+  // SIZE SELECTOR
+  if(item.sizes&&item.sizes.length){
+    html+='<div class="comp-section"><div class="comp-title">Tamanho <span class="comp-sub">(obrigatório)</span></div><div class="size-grid">';
+    item.sizes.forEach((s,i)=>{
+      html+='<div class="size-btn'+(i===0?' selected':'')+'" onclick="selectSize(this,'+s.price+',\''+s.label+'\')">'+
+        '<span class="size-label">'+s.label+'</span>'+
+        '<span class="size-price">R$ '+s.price.toFixed(2).replace('.',',')+'</span>'+
+      '</div>';
+    });
+    html+='</div></div>';
+  }
+
+  const C=COMPLEMENTS[item.cat]||{};
   if(C.acompanhamentos&&C.acompanhamentos.length){
     html+='<div class="comp-section"><div class="comp-title">Acompanhamentos <span class="comp-sub">(grátis)</span></div><div class="comp-grid">';
     C.acompanhamentos.forEach(c=>{
@@ -1091,7 +1185,7 @@ function openModal(id){
   if(C.acrescimos&&C.acrescimos.length){
     html+='<div class="comp-section"><div class="comp-title">Acréscimos <span class="comp-sub">(+R$ 1,00 cada)</span></div><div class="comp-grid">';
     C.acrescimos.forEach(c=>{
-      html+='<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')"><span class="comp-check">✓</span><span>'+c.name+'</span><span class="comp-extra">+R</span></div>';
+      html+='<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')"><span class="comp-check">✓</span><span>'+c.name+'</span><span class="comp-extra">+R$1</span></div>';
     });
     html+='</div></div>';
   }
@@ -1100,6 +1194,14 @@ function openModal(id){
   updateModalPrice();
   document.getElementById('itemModal').classList.add('open');
   document.body.style.overflow='hidden';
+}
+
+function selectSize(el,price,label){
+  selectedSize={price,label};
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  updateModalPrice();
+}
 
 function toggleComp(id,price){
   if(selectedComps[id])delete selectedComps[id];else selectedComps[id]=price;
@@ -1109,8 +1211,10 @@ function toggleComp(id,price){
 }
 function updateModalPrice(){
   if(!modalItem)return;
+  var base=selectedSize?selectedSize.price:modalItem.price;
   var ex=Object.values(selectedComps).reduce(function(s,p){return s+p;},0);
-  document.getElementById('addBtnPrice').textContent='R$ '+((modalItem.price+ex)*modalQty).toFixed(2).replace('.',',');
+  document.getElementById('addBtnPrice').textContent='R$ '+((base+ex)*modalQty).toFixed(2).replace('.',',');
+  document.getElementById('mPrice').textContent='R$ '+(base+ex).toFixed(2).replace('.',',');
 }
 function changeQty(d){
   modalQty=Math.max(1,modalQty+d);
@@ -1125,15 +1229,17 @@ function closeModalBg(e){
 }
 function confirmAdd(){
   if(!modalItem)return;
+  var base=selectedSize?selectedSize.price:modalItem.price;
   var ex=Object.values(selectedComps).reduce(function(s,p){return s+p;},0);
   var C=COMPLEMENTS[modalItem.cat]||{};
   var all=(C.acompanhamentos||[]).concat(C.complementos||[]).concat(C.acrescimos||[]);
   var compNames=all.filter(function(c){return selectedComps[c.id];}).map(function(c){return c.name;});
-  cart.push(Object.assign({},modalItem,{qty:modalQty,unitPrice:modalItem.price+ex,comps:compNames}));
+  var displayName=modalItem.name+(selectedSize?' ('+selectedSize.label+')':'');
+  cart.push(Object.assign({},modalItem,{name:displayName,qty:modalQty,unitPrice:base+ex,comps:compNames}));
   updateCart();
   document.getElementById('itemModal').classList.remove('open');
   document.body.style.overflow='';
-  showToast(modalItem.emoji+' '+modalItem.name+' adicionado!');
+  showToast(modalItem.emoji+' '+displayName+' adicionado!');
 }
 
 /* ── CART ── */
