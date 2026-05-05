@@ -683,29 +683,39 @@ function updateCart() {
     const cleanName = sizeMatch ? item.name.replace(/\s*\([^)]+\)$/, '') : item.name;
 
     const lines = [];
+
+    // 1) tamanho
     if (sizeMatch) lines.push('Tamanho: ' + sizeMatch[1]);
-    if (item.comps && item.comps.length) item.comps.forEach(c => lines.push(c));
-    if (!lines.length && item.desc)
-      lines.push(item.desc.length > 55 ? item.desc.substring(0,55)+'…' : item.desc);
 
-    const detailHTML = lines.map(l => '<span class="ci-det-line">'+l+'</span>').join('');
-    const unitTotal = (item.unitPrice * item.qty).toFixed(2).replace('.',',');
+    // 2) complementos — cada um na sua linha
+    if (item.comps && item.comps.length) {
+      item.comps.forEach(c => lines.push(c));
+    }
 
-    return '<div class="cart-item-row">'+
-      '<div class="ci-tag '+bg+'">'+item.emoji+'</div>'+
-      '<div class="ci-info">'+
-        '<span class="ci-name">'+cleanName+'</span>'+
-        '<div class="ci-details">'+detailHTML+'</div>'+
-        '<div class="ci-qty-row">'+
-          '<button class="ci-qty-btn remove" onclick="cartQty('+idx+',-1)">−</button>'+
-          '<span class="ci-qty-num">'+item.qty+'</span>'+
-          '<button class="ci-qty-btn" onclick="cartQty('+idx+',1)">+</button>'+
-        '</div>'+
-      '</div>'+
-      '<div class="ci-right">'+
-        '<span class="ci-price">R$ '+unitTotal+'</span>'+
-        '<button class="ci-remove" onclick="cartRemove('+idx+')" title="Remover">✕</button>'+
-      '</div>'+
+    // 3) se não tem nenhum detalhe ainda, mostra a descrição do item
+    if (!lines.length) {
+      const d = item.desc || '';
+      lines.push(d.length > 60 ? d.substring(0, 60) + '…' : d);
+    }
+
+    const detailHTML = lines.map(l => '<span class="ci-det-line">' + l + '</span>').join('');
+    const unitTotal = (item.unitPrice * item.qty).toFixed(2).replace('.', ',');
+
+    return '<div class="cart-item-row">' +
+      '<div class="ci-tag ' + bg + '">' + item.emoji + '</div>' +
+      '<div class="ci-info">' +
+        '<span class="ci-name">' + cleanName + '</span>' +
+        '<div class="ci-details">' + detailHTML + '</div>' +
+        '<div class="ci-qty-row">' +
+          '<button class="ci-qty-btn remove" onclick="cartQty(' + idx + ',-1)">−</button>' +
+          '<span class="ci-qty-num">' + item.qty + '</span>' +
+          '<button class="ci-qty-btn" onclick="cartQty(' + idx + ',1)">+</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="ci-right">' +
+        '<span class="ci-price">R$ ' + unitTotal + '</span>' +
+        '<button class="ci-remove" onclick="cartRemove(' + idx + ')" title="Remover">✕</button>' +
+      '</div>' +
     '</div>';
   }).join('');
 }
