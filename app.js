@@ -602,6 +602,7 @@ function confirmAdd() {
 let cart = [], deliveryType = 'delivery', payMethod = 'dinheiro';
 
 function openCart() {
+  goToStep1(); // always open on step 1
   document.getElementById('cartPanel').classList.add('open');
   document.getElementById('cartOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -612,40 +613,82 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
+function goToStep1() {
+  document.getElementById('cartBody').style.display = '';
+  document.getElementById('cartStep1Footer').style.display = '';
+  document.getElementById('cartStep2').style.display = 'none';
+  document.getElementById('cartTitle').textContent = '🛒 Meu Carrinho';
+  document.getElementById('cartStepLabel').textContent = 'Itens do pedido';
+  document.getElementById('stepDot1').classList.add('active');
+  document.getElementById('stepDot2').classList.remove('active');
+}
+
+function goToStep2() {
+  if (!cart.length) return;
+  // render mini resumo
+  const total = cart.reduce((s,i) => s+i.unitPrice*i.qty, 0);
+  const resumo = document.getElementById('step2Resumo');
+  resumo.innerHTML = cart.map(item => {
+    const sizeMatch = item.name.match(/\(([^)]+)\)$/);
+    const cleanName = sizeMatch ? item.name.replace(/\s*\([^)]+\)$/, '') : item.name;
+    const sizeLabel = sizeMatch ? ' · '+sizeMatch[1] : '';
+    return '<div class="step2-resumo-item">'+
+      '<span class="step2-resumo-name">'+item.emoji+' '+cleanName+sizeLabel+'</span>'+
+      '<span class="step2-resumo-qty">×'+item.qty+'</span>'+
+      '<span class="step2-resumo-price">R$ '+(item.unitPrice*item.qty).toFixed(2).replace('.',',')+'</span>'+
+    '</div>';
+  }).join('');
+  document.getElementById('totalVal2').textContent = 'R$ '+total.toFixed(2).replace('.',',');
+  // switch view
+  document.getElementById('cartBody').style.display = 'none';
+  document.getElementById('cartStep1Footer').style.display = 'none';
+  document.getElementById('cartStep2').style.display = 'flex';
+  document.getElementById('cartTitle').textContent = '📋 Finalizar Pedido';
+  document.getElementById('cartStepLabel').textContent = 'Entrega e pagamento';
+  document.getElementById('stepDot1').classList.remove('active');
+  document.getElementById('stepDot2').classList.add('active');
+  updateStatus(); // refresh sendBtn state
+}
+
 function updateCart() {
   const total = cart.reduce((s,i) => s+i.unitPrice*i.qty, 0);
   const count = cart.reduce((s,i) => s+i.qty, 0);
-  document.getElementById('totalVal').textContent = 'R$ '+total.toFixed(2).replace('.',',');
+
+  // update step1 total
+  const tv = document.getElementById('totalVal');
+  if (tv) tv.textContent = 'R$ '+total.toFixed(2).replace('.',',');
+
+  // badge
   const badge = document.getElementById('cartBadge');
   badge.textContent = count;
   badge.style.display = count > 0 ? 'flex' : 'none';
-  document.getElementById('sendBtn').disabled = cart.length===0 || !isOpen();
+
+  // "continuar" button
+  const nextBtn = document.getElementById('cartNextBtn');
+  if (nextBtn) nextBtn.disabled = cart.length === 0;
+
+  // send button (step2)
+  const sendBtn = document.getElementById('sendBtn');
+  if (sendBtn) sendBtn.disabled = cart.length === 0 || !isOpen();
+
   const body = document.getElementById('cartBody');
   if (!cart.length) {
     body.innerHTML = '<div class="cart-empty-msg"><div class="big">🛒</div><p>Nenhum item adicionado ainda</p></div>';
     return;
   }
+
   body.innerHTML = cart.map((item, idx) => {
     const bg = BG[item.cat] || 'esp-bg';
-
-    // Build detail lines: size + comps, split each by comma or keep as separate lines
-    const lines = [];
-    // Tamanho vem embutido no nome entre parênteses — extraímos para detalhe
     const sizeMatch = item.name.match(/\(([^)]+)\)$/);
     const cleanName = sizeMatch ? item.name.replace(/\s*\([^)]+\)$/, '') : item.name;
+
+    const lines = [];
     if (sizeMatch) lines.push('Tamanho: ' + sizeMatch[1]);
-    if (item.comps && item.comps.length) {
-      // Split each comp as its own line
-      item.comps.forEach(c => lines.push(c));
-    }
-    // If no details at all, show the short desc
-    if (!lines.length && item.desc) {
-      // Show first 50 chars of desc
+    if (item.comps && item.comps.length) item.comps.forEach(c => lines.push(c));
+    if (!lines.length && item.desc)
       lines.push(item.desc.length > 55 ? item.desc.substring(0,55)+'…' : item.desc);
-    }
 
     const detailHTML = lines.map(l => '<span class="ci-det-line">'+l+'</span>').join('');
-
     const unitTotal = (item.unitPrice * item.qty).toFixed(2).replace('.',',');
 
     return '<div class="cart-item-row">'+
@@ -654,14 +697,14 @@ function updateCart() {
         '<span class="ci-name">'+cleanName+'</span>'+
         '<div class="ci-details">'+detailHTML+'</div>'+
         '<div class="ci-qty-row">'+
-          '<button class="ci-qty-btn remove" onclick="cartQty('+idx+',-1)" title="Diminuir">−</button>'+
+          '<button class="ci-qty-btn remove" onclick="cartQty('+idx+',-1)">−</button>'+
           '<span class="ci-qty-num">'+item.qty+'</span>'+
-          '<button class="ci-qty-btn" onclick="cartQty('+idx+',1)" title="Aumentar">+</button>'+
+          '<button class="ci-qty-btn" onclick="cartQty('+idx+',1)">+</button>'+
         '</div>'+
       '</div>'+
       '<div class="ci-right">'+
         '<span class="ci-price">R$ '+unitTotal+'</span>'+
-        '<button class="ci-remove" onclick="cartRemove('+idx+')" title="Remover item">✕</button>'+
+        '<button class="ci-remove" onclick="cartRemove('+idx+')" title="Remover">✕</button>'+
       '</div>'+
     '</div>';
   }).join('');

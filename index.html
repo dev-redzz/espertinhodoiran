@@ -174,90 +174,124 @@
 <div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="cart-handle"></div>
+
+  <!-- ── STEP HEADER ── -->
   <div class="cart-head">
     <div class="cart-head-top">
-      <h2>🛒 Seu pedido</h2>
+      <div class="cart-steps">
+        <span class="cart-step-dot active" id="stepDot1"></span>
+        <span class="cart-step-line"></span>
+        <span class="cart-step-dot" id="stepDot2"></span>
+      </div>
+      <h2 id="cartTitle">🛒 Meu Carrinho</h2>
       <button class="cart-close" onclick="closeCart()">✕</button>
     </div>
+    <p class="cart-step-label" id="cartStepLabel">Itens do pedido</p>
   </div>
 
+  <!-- ── STEP 1: ITEMS ── -->
   <div class="cart-body" id="cartBody">
     <div class="cart-empty-msg">
       <div class="big">🛒</div>
       <p>Nenhum item adicionado ainda</p>
     </div>
   </div>
-
-  <div class="cart-footer">
-    <div class="closed-hint" id="closedHint">⏰ Fechado agora — pedido não pode ser enviado</div>
-
-    <div class="delivery-row">
-      <div class="del-opt active" id="optDelivery" onclick="setDelivery('delivery')">
-        <span class="del-icon">🛵</span>
-        <span class="del-label">Delivery</span>
-        <span class="del-sub">Entrega em casa</span>
-      </div>
-      <div class="del-opt" id="optRetirada" onclick="setDelivery('retirada')">
-        <span class="del-icon">🏃</span>
-        <span class="del-label">Retirada</span>
-        <span class="del-sub">No balcão</span>
-      </div>
-    </div>
-
-    <div class="addr-form show" id="addrForm">
-      <div class="form-row">
-        <label>Rua / Avenida</label>
-        <input class="form-input" id="fRua" type="text" placeholder="Ex: Rua das Flores">
-      </div>
-      <div class="form-grid">
-        <div class="form-row">
-          <label>Número</label>
-          <input class="form-input" id="fNum" type="text" placeholder="123">
-        </div>
-        <div class="form-row">
-          <label>Complemento</label>
-          <input class="form-input" id="fComp" type="text" placeholder="Apto, bloco...">
-        </div>
-      </div>
-      <div class="form-row">
-        <label>Bairro</label>
-        <input class="form-input" id="fBairro" type="text" placeholder="Ex: Centro">
-      </div>
-      <div class="form-row">
-        <label>Ponto de referência</label>
-        <input class="form-input" id="fRef" type="text" placeholder="Próximo ao mercado...">
-      </div>
-    </div>
-
-    <div class="pay-section">
-      <span class="pay-label">Forma de pagamento</span>
-      <div class="pay-opts">
-        <div class="pay-opt active" data-pay="dinheiro" onclick="setPay(this)">💵 Dinheiro</div>
-        <div class="pay-opt" data-pay="pix" onclick="setPay(this)">📲 Pix</div>
-        <div class="pay-opt" data-pay="cartao" onclick="setPay(this)">💳 Cartão</div>
-      </div>
-      <div id="trocoRow">
-        <div class="form-row" style="margin-top:7px">
-          <label>Troco para quanto?</label>
-          <input class="form-input" id="fTroco" type="number" placeholder="Ex: 50">
-        </div>
-      </div>
-    </div>
-
-    <textarea class="obs-area" id="obsArea" placeholder="Observações gerais (opcional)..."></textarea>
-
+  <div class="cart-step1-footer" id="cartStep1Footer">
     <div class="total-row">
-      <span class="total-label">Total do pedido</span>
+      <span class="total-label">Total</span>
       <span class="total-val" id="totalVal">R$ 0,00</span>
     </div>
-
-    <button class="send-btn" id="sendBtn" onclick="sendWhatsApp()" disabled>
-      <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-      </svg>
-      Enviar pelo WhatsApp
+    <button class="cart-next-btn" id="cartNextBtn" onclick="goToStep2()" disabled>
+      Continuar para entrega →
     </button>
   </div>
+
+  <!-- ── STEP 2: DELIVERY + PAYMENT ── -->
+  <div class="cart-step2" id="cartStep2" style="display:none">
+    <div class="cart-body cart-body-step2">
+      <div class="closed-hint" id="closedHint">⏰ Fechado agora — pedido não pode ser enviado</div>
+
+      <div class="step2-section-label">Tipo de entrega</div>
+      <div class="delivery-row">
+        <div class="del-opt active" id="optDelivery" onclick="setDelivery('delivery')">
+          <span class="del-icon">🛵</span>
+          <span class="del-label">Delivery</span>
+          <span class="del-sub">Entrega em casa</span>
+        </div>
+        <div class="del-opt" id="optRetirada" onclick="setDelivery('retirada')">
+          <span class="del-icon">🏃</span>
+          <span class="del-label">Retirada</span>
+          <span class="del-sub">No balcão</span>
+        </div>
+      </div>
+
+      <div class="addr-form show" id="addrForm">
+        <div class="step2-section-label">Endereço de entrega</div>
+        <div class="form-row">
+          <label>Rua / Avenida</label>
+          <input class="form-input" id="fRua" type="text" placeholder="Ex: Rua das Flores">
+        </div>
+        <div class="form-grid">
+          <div class="form-row">
+            <label>Número</label>
+            <input class="form-input" id="fNum" type="text" placeholder="123">
+          </div>
+          <div class="form-row">
+            <label>Complemento</label>
+            <input class="form-input" id="fComp" type="text" placeholder="Apto, bloco...">
+          </div>
+        </div>
+        <div class="form-row">
+          <label>Bairro</label>
+          <input class="form-input" id="fBairro" type="text" placeholder="Ex: Centro">
+        </div>
+        <div class="form-row">
+          <label>Ponto de referência</label>
+          <input class="form-input" id="fRef" type="text" placeholder="Próximo ao mercado...">
+        </div>
+      </div>
+
+      <div class="step2-section-label">Pagamento</div>
+      <div class="pay-section">
+        <div class="pay-opts">
+          <div class="pay-opt active" data-pay="dinheiro" onclick="setPay(this)">💵 Dinheiro</div>
+          <div class="pay-opt" data-pay="pix" onclick="setPay(this)">📲 Pix</div>
+          <div class="pay-opt" data-pay="cartao" onclick="setPay(this)">💳 Cartão</div>
+        </div>
+        <div id="trocoRow">
+          <div class="form-row" style="margin-top:7px">
+            <label>Troco para quanto?</label>
+            <input class="form-input" id="fTroco" type="number" placeholder="Ex: 50">
+          </div>
+        </div>
+      </div>
+
+      <div class="step2-section-label">Observações</div>
+      <textarea class="obs-area" id="obsArea" placeholder="Ex: sem pimenta, bem passado..."></textarea>
+
+      <!-- mini resumo do pedido -->
+      <div class="step2-section-label">Resumo</div>
+      <div class="step2-resumo" id="step2Resumo"></div>
+
+      <div class="total-row" style="margin-top:12px">
+        <span class="total-label">Total do pedido</span>
+        <span class="total-val" id="totalVal2">R$ 0,00</span>
+      </div>
+    </div>
+
+    <div class="cart-footer">
+      <div class="step2-actions">
+        <button class="cart-back-btn" onclick="goToStep1()">← Voltar</button>
+        <button class="send-btn" id="sendBtn" onclick="sendWhatsApp()" disabled>
+          <svg width="17" height="17" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Enviar pelo WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ═══════════════ ITEM MODAL ═══════════════ -->
