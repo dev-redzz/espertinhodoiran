@@ -761,7 +761,7 @@ function sendWhatsApp() {
   if (payMethod==='dinheiro' && troco) msg += ' (troco para R$ '+troco+')';
   if (obs) msg += '\n*Obs.:* '+obs;
   msg += '\n\n_via site_ 🌐';
-  window.open('https://wa.me/5599027965?text='+encodeURIComponent(msg), '_blank');
+  window.open('https://wa.me/5599990279650?text='+encodeURIComponent(msg), '_blank');
 }
 
 /* ─────────────────────────────────────────
