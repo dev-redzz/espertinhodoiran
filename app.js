@@ -580,12 +580,6 @@ function closeModalBg(e) {
 }
 
 
-  // Select the clicked one
-  selectedComps[id] = 0;
-  el.classList.add('selected');
-  updateModalPrice();
-}
-
 function confirmAdd() {
   if (!modalItem) return;
   const base = selectedSize ? selectedSize.price : modalItem.price;
@@ -804,16 +798,12 @@ function showToast(msg) {
 /* ─────────────────────────────────────────
    INIT
 ───────────────────────────────────────── */
-renderMenu();
-buildSchedule();
-updateStatus();
-setInterval(updateStatus, 30000);
-
 /* ─────────────────────────────────────────
    CARDÁPIO DO DIA — acompanhamentos e acréscimos
    dinâmicos nos espetinhos por dia da semana
    0=Dom 1=Seg 2=Ter 3=Qua 4=Qui 5=Sex 6=Sáb
 ───────────────────────────────────────── */
+
 const DAILY_ACOMP = {
   1: { // Segunda-feira
     label: 'Segunda-feira',
@@ -913,3 +903,8 @@ const DAILY_ACOMP = {
 function getTodayMenu() {
   return DAILY_ACOMP[new Date().getDay()] || null;
 }
+
+renderMenu();
+buildSchedule();
+updateStatus();
+setInterval(updateStatus, 30000);
