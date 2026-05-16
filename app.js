@@ -498,13 +498,40 @@ function openModal(id) {
 
   // 2) COMPLEMENTS (only for esp and acai)
   const C = COMPLEMENTS[item.cat] || {};
-  if (C.acompanhamentos && C.acompanhamentos.length) {
-    html += '<div class="comp-section"><div class="comp-title">Acompanhamentos <span class="comp-sub">(grátis)</span></div><div class="comp-grid">';
-    C.acompanhamentos.forEach(c => {
-      html += '<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')">'+
-        '<span class="comp-check">✓</span><span>'+c.name+'</span></div>';
-    });
-    html += '</div></div>';
+
+  // For espetinhos: replace static acompanhamentos with today's daily menu
+  if (item.cat === 'esp') {
+    const daily = getTodayMenu();
+    const dayNames = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+    const todayName = dayNames[new Date().getDay()];
+    if (daily) {
+      if (daily.acomp && daily.acomp.length) {
+        html += '<div class="comp-section"><div class="comp-title">Acompanhamentos do dia <span class="comp-sub">('+todayName+' · grátis)</span></div><div class="comp-grid">';
+        daily.acomp.forEach(c => {
+          html += '<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')">'+
+            '<span class="comp-check">✓</span><span>'+c.name+'</span></div>';
+        });
+        html += '</div></div>';
+      }
+      if (daily.acr && daily.acr.length) {
+        html += '<div class="comp-section"><div class="comp-title">Acréscimos do dia <span class="comp-sub">(+R$ 1,00 cada)</span></div><div class="comp-grid">';
+        daily.acr.forEach(c => {
+          html += '<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')">'+
+            '<span class="comp-check">✓</span><span>'+c.name+'</span>'+
+            '<span class="comp-extra">+R$1</span></div>';
+        });
+        html += '</div></div>';
+      }
+    }
+  } else {
+    if (C.acompanhamentos && C.acompanhamentos.length) {
+      html += '<div class="comp-section"><div class="comp-title">Acompanhamentos <span class="comp-sub">(grátis)</span></div><div class="comp-grid">';
+      C.acompanhamentos.forEach(c => {
+        html += '<div class="comp-item" id="comp-'+c.id+'" onclick="toggleComp(\''+c.id+'\','+c.price+')">'+
+          '<span class="comp-check">✓</span><span>'+c.name+'</span></div>';
+      });
+      html += '</div></div>';
+    }
   }
   if (C.complementos && C.complementos.length) {
     html += '<div class="comp-section"><div class="comp-title">Complementos <span class="comp-sub">(grátis)</span></div><div class="comp-grid">';
@@ -573,7 +600,9 @@ function confirmAdd() {
   const base = selectedSize ? selectedSize.price : modalItem.price;
   const ex   = Object.values(selectedComps).reduce((s,p) => s+p, 0);
   const C    = COMPLEMENTS[modalItem.cat] || {};
-  const all  = [...(C.acompanhamentos||[]), ...(C.complementos||[]), ...(C.acrescimos||[])];
+  const daily = modalItem.cat === 'esp' ? (getTodayMenu() || null) : null;
+  const dailyPool = daily ? [...(daily.acomp||[]), ...(daily.acr||[])] : [];
+  const all  = [...dailyPool, ...(C.acompanhamentos||[]), ...(C.complementos||[]), ...(C.acrescimos||[])];
   const compNames = all.filter(c => selectedComps[c.id]).map(c => c.name);
   const displayName = modalItem.name + (selectedSize ? ' ('+selectedSize.label+')' : '');
   cart.push({ ...modalItem, name:displayName, qty:modalQty, unitPrice:base+ex, comps:compNames });
@@ -788,3 +817,108 @@ renderMenu();
 buildSchedule();
 updateStatus();
 setInterval(updateStatus, 30000);
+
+/* ─────────────────────────────────────────
+   CARDÁPIO DO DIA — acompanhamentos e acréscimos
+   dinâmicos nos espetinhos por dia da semana
+   0=Dom 1=Seg 2=Ter 3=Qua 4=Qui 5=Sex 6=Sáb
+───────────────────────────────────────── */
+const DAILY_ACOMP = {
+  1: { // Segunda-feira
+    label: 'Segunda-feira',
+    acomp: [
+      { id:'d_arroz',  name:'Arroz',           price:0 },
+      { id:'d_feijao', name:'Feijão',           price:0 },
+      { id:'d_farofa', name:'Farofa',           price:0 },
+      { id:'d_cuxa',   name:'Cuxá',             price:0 },
+      { id:'d_salada', name:'Salada verde',     price:0 },
+      { id:'d_maxa',   name:'Macaxeira frita',  price:0 },
+      { id:'d_mac',    name:'Macarrão',         price:0 },
+    ],
+    acr: [
+      { id:'da_arroz',  name:'Arroz extra',          price:1 },
+      { id:'da_feijao', name:'Feijão extra',          price:1 },
+      { id:'da_farofa', name:'Farofa extra',          price:1 },
+      { id:'da_cuxa',   name:'Cuxá extra',            price:1 },
+      { id:'da_maxa',   name:'Macaxeira frita extra', price:1 },
+    ],
+  },
+  2: { // Terça-feira
+    label: 'Terça-feira',
+    acomp: [
+      { id:'d_arroz',  name:'Arroz (ver opções do dia)', price:0 },
+      { id:'d_farofa', name:'Farofa com batata palha',   price:0 },
+      { id:'d_cuxa',   name:'Cuxá',                      price:0 },
+      { id:'d_pure',   name:'Purê',                      price:0 },
+      { id:'d_vinag',  name:'Vinagrete',                 price:0 },
+      { id:'d_mac',    name:'Macarrão',                  price:0 },
+    ],
+    acr: [
+      { id:'da_farofa', name:'Farofa c/ batata palha extra', price:1 },
+      { id:'da_cuxa',   name:'Cuxá extra',                   price:1 },
+      { id:'da_pure',   name:'Purê extra',                   price:1 },
+      { id:'da_vinag',  name:'Vinagrete extra',              price:1 },
+    ],
+  },
+  3: null, // Quarta à noite: fechado
+  4: { // Quinta-feira
+    label: 'Quinta-feira',
+    acomp: [
+      { id:'d_arroz',  name:'Arroz',                        price:0 },
+      { id:'d_cuxa',   name:'Cuxá',                         price:0 },
+      { id:'d_mac',    name:'Macarrão',                     price:0 },
+      { id:'d_salada', name:'Salada verde',                 price:0 },
+      { id:'d_feijao', name:'Feijão carioca com calabresa', price:0 },
+      { id:'d_farofa', name:'Farofa',                       price:0 },
+      { id:'d_maxa',   name:'Macaxeira frita',              price:0 },
+    ],
+    acr: [
+      { id:'da_arroz',  name:'Arroz extra',                       price:1 },
+      { id:'da_cuxa',   name:'Cuxá extra',                        price:1 },
+      { id:'da_feijao', name:'Feijão carioca c/ calabresa extra', price:1 },
+      { id:'da_farofa', name:'Farofa extra',                      price:1 },
+      { id:'da_maxa',   name:'Macaxeira frita extra',             price:1 },
+    ],
+  },
+  5: { // Sexta-feira
+    label: 'Sexta-feira',
+    acomp: [
+      { id:'d_arroz',  name:'Arroz',              price:0 },
+      { id:'d_feijao', name:'Feijão carioca',     price:0 },
+      { id:'d_mac',    name:'Macarrão',           price:0 },
+      { id:'d_cuxa',   name:'Cuxá',               price:0 },
+      { id:'d_salmai', name:'Salada de maionese', price:0 },
+      { id:'d_farofa', name:'Farofa',             price:0 },
+    ],
+    acr: [
+      { id:'da_arroz',  name:'Arroz extra',              price:1 },
+      { id:'da_feijao', name:'Feijão carioca extra',     price:1 },
+      { id:'da_cuxa',   name:'Cuxá extra',               price:1 },
+      { id:'da_salmai', name:'Salada de maionese extra', price:1 },
+      { id:'da_farofa', name:'Farofa extra',             price:1 },
+    ],
+  },
+  6: { // Sábado
+    label: 'Sábado',
+    acomp: [
+      { id:'d_arroz',    name:'Arroz',        price:0 },
+      { id:'d_feijoada', name:'Feijoada',     price:0 },
+      { id:'d_mac',      name:'Macarrão',     price:0 },
+      { id:'d_cuxa',     name:'Cuxá',         price:0 },
+      { id:'d_salada',   name:'Salada verde', price:0 },
+      { id:'d_vinag',    name:'Vinagrete',    price:0 },
+    ],
+    acr: [
+      { id:'da_arroz',    name:'Arroz extra',     price:1 },
+      { id:'da_feijoada', name:'Feijoada extra',  price:1 },
+      { id:'da_cuxa',     name:'Cuxá extra',      price:1 },
+      { id:'da_salada',   name:'Salada verde extra', price:1 },
+      { id:'da_vinag',    name:'Vinagrete extra', price:1 },
+    ],
+  },
+  0: null, // Domingo: fechado
+};
+
+function getTodayMenu() {
+  return DAILY_ACOMP[new Date().getDay()] || null;
+}

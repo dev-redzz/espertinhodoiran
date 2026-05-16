@@ -33,7 +33,7 @@
 }
 html { scroll-behavior: smooth; }
 body {
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
@@ -62,7 +62,7 @@ body {
 }
 .header-info { flex: 1; min-width: 0; }
 .header-name {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 17px; font-weight: 900;
   color: #fff; line-height: 1.15;
   letter-spacing: -.2px;
@@ -116,7 +116,7 @@ body {
 .cat-tabs { display: inline-flex; padding: 0 4px; }
 .cat-tab {
   display: inline-block; padding: 10px 15px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 13px; font-weight: 600;
   color: rgba(255,255,255,.65);
   cursor: pointer; border-bottom: 3px solid transparent;
@@ -146,7 +146,7 @@ body {
   padding: 20px 18px 12px;
 }
 .section-title {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 20px; font-weight: 800;
   display: flex; align-items: center; gap: 8px;
 }
@@ -212,7 +212,7 @@ body {
 .ibadge-new { background: var(--yellow-sf); color: var(--yellow-dk); border: 1px solid var(--yellow-md); }
 
 .item-name {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800; font-size: 15px;
   color: var(--text); margin-bottom: 3px; line-height: 1.2;
 }
@@ -227,7 +227,7 @@ body {
   justify-content: space-between; margin-top: 9px;
 }
 .item-price {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 15px; font-weight: 800; color: var(--red);
 }
 .item-price-from {
@@ -305,7 +305,7 @@ body {
 }
 .cart-head-top { display: flex; align-items: center; gap: 10px; }
 .cart-head h2 {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 17px; font-weight: 800; flex: 1;
 }
 .cart-close {
@@ -354,7 +354,7 @@ body {
   width: 100%; padding: 13px;
   background: var(--red); color: #fff; border: none;
   border-radius: var(--radius);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800; font-size: 15px; cursor: pointer;
   transition: background .15s; margin-top: 8px;
 }
@@ -398,7 +398,7 @@ body {
 .ci-qty-num { font-size: 13px; font-weight: 800; min-width: 18px; text-align: center; }
 
 .ci-right { flex-shrink: 0; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; padding-top: 1px; }
-.ci-price { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 800; color: var(--red); white-space: nowrap; }
+.ci-price { font-family: 'Montserrat', sans-serif; font-size: 15px; font-weight: 800; color: var(--red); white-space: nowrap; }
 .ci-remove {
   background: none; border: 1.5px solid var(--border);
   border-radius: 50%; width: 22px; height: 22px;
@@ -447,7 +447,7 @@ body {
 .step2-resumo-item:last-child { border-bottom: none; }
 .step2-resumo-name { color: var(--text); flex: 1; font-size: 12px; }
 .step2-resumo-qty  { color: var(--muted); font-size: 11px; flex-shrink: 0; }
-.step2-resumo-price { color: var(--red); font-family: 'Fraunces', serif; white-space: nowrap; flex-shrink: 0; }
+.step2-resumo-price { color: var(--red); font-family: 'Montserrat', sans-serif; white-space: nowrap; flex-shrink: 0; }
 
 /* total row */
 .total-row {
@@ -457,7 +457,7 @@ body {
   border: 1px solid var(--yellow-md);
 }
 .total-label { font-size: 13px; font-weight: 600; color: var(--muted); }
-.total-val { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 900; color: var(--red); }
+.total-val { font-family: 'Montserrat', sans-serif; font-size: 21px; font-weight: 900; color: var(--red); }
 
 /* footer step2 — SEMPRE VISÍVEL, nunca empurrado para fora */
 .cart-footer {
@@ -470,7 +470,7 @@ body {
   flex-shrink: 0; padding: 13px 14px;
   background: var(--bg); color: var(--muted);
   border: 1.5px solid var(--border); border-radius: var(--radius);
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 700; font-size: 13px; cursor: pointer;
   transition: all .14s; white-space: nowrap;
 }
@@ -478,7 +478,7 @@ body {
 .send-btn {
   flex: 1; padding: 13px;
   background: #25D366; border: none; border-radius: var(--radius);
-  color: #fff; font-family: 'Plus Jakarta Sans', sans-serif;
+  color: #fff; font-family: 'Montserrat', sans-serif;
   font-weight: 800; font-size: 14px; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 7px;
   transition: background .18s; box-shadow: 0 3px 14px rgba(37,211,102,.28);
@@ -520,7 +520,7 @@ body {
   width: 100%; padding: 8px 11px;
   border: 1.5px solid var(--border); border-radius: 9px;
   background: var(--surface); color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+  font-family: 'Montserrat', sans-serif; font-size: 13px;
   outline: none; transition: border .14s;
 }
 .form-input:focus { border-color: var(--red); }
@@ -534,7 +534,7 @@ body {
   border: 1.5px solid var(--border); background: var(--surface);
   border-radius: 8px; padding: 6px 11px;
   cursor: pointer; font-size: 12px; font-weight: 600; color: var(--muted);
-  transition: all .13s; font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: all .13s; font-family: 'Montserrat', sans-serif;
 }
 .pay-opt:hover { border-color: var(--red-mid); color: var(--text); }
 .pay-opt.active { border-color: var(--red); color: var(--red); background: var(--red-soft); }
@@ -546,7 +546,7 @@ body {
   width: 100%; padding: 8px 11px; height: 52px;
   border: 1.5px solid var(--border); border-radius: 9px;
   background: var(--surface); color: var(--text);
-  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 13px;
+  font-family: 'Montserrat', sans-serif; font-size: 13px;
   outline: none; resize: none; transition: border .14s;
   margin-bottom: 4px; display: block;
 }
@@ -605,7 +605,7 @@ body {
 
 .modal-info { padding: 16px 18px 0; flex-shrink: 0; }
 .modal-item-name {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 22px; font-weight: 900; margin-bottom: 5px;
 }
 .modal-item-desc {
@@ -613,7 +613,7 @@ body {
   line-height: 1.6; margin-bottom: 8px;
 }
 .modal-item-price {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 18px; font-weight: 800; color: var(--red);
   padding-bottom: 14px; border-bottom: 1px solid var(--border);
 }
@@ -677,12 +677,12 @@ body {
   transition: all .13s;
 }
 .qty-mod:hover { background: var(--border); }
-.qty-disp { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 800; min-width: 30px; text-align: center; }
+.qty-disp { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; min-width: 30px; text-align: center; }
 .add-to-cart-btn {
   width: 100%; padding: 14px;
   background: var(--red); color: #fff; border: none;
   border-radius: var(--radius);
-  font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: 15px;
+  font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 15px;
   cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
   transition: background .15s;
 }
@@ -716,7 +716,7 @@ body {
   margin-bottom: 14px;
 }
 .footer-brand-name {
-  font-family: 'Fraunces', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 22px; font-weight: 900; color: #fff;
   text-align: center; line-height: 1.2; margin-bottom: 6px;
 }
@@ -780,7 +780,7 @@ body {
   margin: 0 20px 20px;
   background: #25D366; color: #fff;
   border: none; border-radius: 13px; padding: 14px 20px;
-  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800; font-size: 14px; cursor: pointer;
   text-decoration: none;
   box-shadow: 0 4px 18px rgba(37,211,102,.35);
