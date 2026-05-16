@@ -91,7 +91,7 @@ const MENU = [
   /* ── MACARRONADAS ───────────────────── */
   /* Tamanhos: P=R$20 · M=R$25 · G=R$35   */
   {
-    id: 7, cat: 'mac',
+    id: 107, cat: 'mac',
     name: 'Macarronada Mista',
     desc: 'Calabresa, toscana, presunto, queijo, carne moída, frango, mortadela, cebola, creme de leite, milho, ervilha, azeitona, orégano, parmesão e batata palha. Molho branco ou vermelho.',
     price: 20, emoji: '🍝', badge: 'hot',
@@ -99,7 +99,7 @@ const MENU = [
     sizes: [{ label:'P', price:20 },{ label:'M', price:25 },{ label:'G', price:35 }],
   },
   {
-    id: 8, cat: 'mac',
+    id: 108, cat: 'mac',
     name: 'Macarronada de Frango',
     desc: 'Macarrão, frango, queijo, ervilha, milho, cebola, azeitona, orégano, creme de leite, parmesão e batata palha. Molho branco ou vermelho.',
     price: 20, emoji: '🍝', badge: null,
@@ -107,7 +107,7 @@ const MENU = [
     sizes: [{ label:'P', price:20 },{ label:'M', price:25 },{ label:'G', price:35 }],
   },
   {
-    id: 9, cat: 'mac',
+    id: 109, cat: 'mac',
     name: 'Macarronada de Carne',
     desc: 'Macarrão, carne moída, queijo, milho, ervilha, azeitona, cebola, orégano, creme de leite e parmesão. Molho branco ou vermelho.',
     price: 20, emoji: '🍝', badge: null,
@@ -115,7 +115,7 @@ const MENU = [
     sizes: [{ label:'P', price:20 },{ label:'M', price:25 },{ label:'G', price:35 }],
   },
   {
-    id: 10, cat: 'mac',
+    id: 110, cat: 'mac',
     name: 'Macarronada Nordestina',
     desc: 'Carne de sol desfiada, queijo, cebola, milho, ervilha, azeitona, queijo coalho, creme de leite, parmesão, batata palha. Molho branco ou vermelho.',
     price: 20, emoji: '⭐', badge: 'new',
@@ -123,7 +123,7 @@ const MENU = [
     sizes: [{ label:'P', price:20 },{ label:'M', price:25 },{ label:'G', price:35 }],
   },
   {
-    id: 11, cat: 'mac',
+    id: 111, cat: 'mac',
     name: 'Macarronada Mamma',
     desc: 'Linguiça, calabresa, carne moída, tomate picado, queijo, milho, ervilha, azeitona, parmesão, orégano, creme de leite e batata palha. Molho branco ou vermelho.',
     price: 20, emoji: '🍝', badge: null,
@@ -131,7 +131,7 @@ const MENU = [
     sizes: [{ label:'P', price:20 },{ label:'M', price:25 },{ label:'G', price:35 }],
   },
   {
-    id: 12, cat: 'mac',
+    id: 112, cat: 'mac',
     name: 'Calabresa Apimentada',
     desc: 'Calabresa apimentada, pimenta, queijo, carne moída, cebola, creme de leite, milho, ervilha, azeitona, orégano e batata palha. Molho branco ou vermelho.',
     price: 20, emoji: '🌶️', badge: null,
