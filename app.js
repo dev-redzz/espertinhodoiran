@@ -277,9 +277,25 @@ const MENU = [
   {
     id: 60, cat: 'beb',
     name: 'Refrigerante Latinha',
-    desc: 'Pergunte ao atendente quais sabores estão disponíveis hoje!',
+    desc: '⚠️ Pergunte ao atendente quais sabores estão disponíveis hoje!',
     price: 6, emoji: '🥤', badge: null,
-    sizes: [{ label:'Latinha', price:6 },{ label:'1 Litro', price:10 },{ label:'2 Litros', price:15 }],
+    sizes: null,
+    img: null,
+  },
+  {
+    id: 61, cat: 'beb',
+    name: 'Refrigerante 1 Litro',
+    desc: '⚠️ Pergunte ao atendente quais sabores estão disponíveis hoje!',
+    price: 10, emoji: '🥤', badge: null,
+    sizes: null,
+    img: null,
+  },
+  {
+    id: 62, cat: 'beb',
+    name: 'Refrigerante 2 Litros',
+    desc: '⚠️ Pergunte ao atendente quais sabores estão disponíveis hoje!',
+    price: 15, emoji: '🥤', badge: null,
+    sizes: null,
     img: null,
   },
 
