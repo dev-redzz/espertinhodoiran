@@ -222,7 +222,7 @@ const MENU = [
     desc: 'Fruta amazônica cremosa e deliciosa.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:9 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   {
     id: 52, cat: 'beb',
@@ -230,7 +230,7 @@ const MENU = [
     desc: 'Maracujá fresco, gelado e refrescante.',
     price: 9, emoji: '🍹', badge: 'hot',
     img: null,
-    sizes: [{ label:'400ml', price:9 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   {
     id: 53, cat: 'beb',
@@ -238,7 +238,7 @@ const MENU = [
     desc: 'Cajá com sabor único do nordeste.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:9 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   {
     id: 54, cat: 'beb',
@@ -246,32 +246,59 @@ const MENU = [
     desc: 'Sabor intenso e aromático da Amazônia.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:9 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   /* Grupo 2: R$7 (400ml) · R$27 (Jarra 1L) */
   {
     id: 55, cat: 'beb',
     name: 'Suco de Goiaba',
     desc: 'Goiaba vermelha, cremosa e adocicada.',
-    price: 7, emoji: '🍹', badge: null,
+    price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:7 },{ label:'Jarra 1L', price:27 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   {
     id: 56, cat: 'beb',
     name: 'Suco de Acerola',
     desc: 'Rico em vitamina C, refrescante e saboroso.',
-    price: 7, emoji: '🍹', badge: null,
+    price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:7 },{ label:'Jarra 1L', price:27 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
   },
   {
     id: 59, cat: 'beb',
     name: 'Suco de Caju',
     desc: 'Caju nordestino fresquinho, sem conservante.',
-    price: 7, emoji: '🍹', badge: null,
+    price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'400ml', price:7 },{ label:'Jarra 1L', price:27 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+  },
+  // ── Refrigerantes ──
+  {
+    id: 60, cat: 'beb',
+    name: 'Refrigerante Latinha',
+    desc: 'Pergunte ao atendente quais sabores estão disponíveis hoje!',
+    price: 6, emoji: '🥤', badge: null,
+    sizes: [{ label:'Latinha', price:6 },{ label:'1 Litro', price:10 },{ label:'2 Litros', price:15 }],
+    img: null,
+  },
+
+  // ── Outros ──
+  {
+    id: 70, cat: 'outros',
+    name: 'Creme de Galinha',
+    desc: '500ml do nosso cremoso e saboroso creme de galinha.',
+    price: 15, emoji: '🍲', badge: null,
+    sizes: null,
+    img: null,
+  },
+  {
+    id: 71, cat: 'outros',
+    name: 'Caldo',
+    desc: '500ml de caldo quentinho e temperado.',
+    price: 15, emoji: '🥣', badge: null,
+    sizes: null,
+    img: null,
   },
 ];
 
@@ -307,7 +334,7 @@ const COMPLEMENTS = {
 };
 
 /* bg class per category */
-const BG = { esp:'esp-bg', panq:'panq-bg', mac:'mac-bg', acai:'acai-bg', beb:'beb-bg' };
+const BG = { esp:'esp-bg', panq:'panq-bg', mac:'mac-bg', acai:'acai-bg', beb:'beb-bg', outros:'outros-bg' };
 
 /* ─────────────────────────────────────────
    SCHEDULE HELPERS
@@ -364,7 +391,7 @@ function updateStatus() {
    RENDER MENU
 ───────────────────────────────────────── */
 function renderMenu() {
-  const sections = { esp:'items-esp', panq:'items-panq', mac:'items-mac', acai:'items-acai', beb:'items-beb' };
+  const sections = { esp:'items-esp', panq:'items-panq', mac:'items-mac', acai:'items-acai', beb:'items-beb', outros:'items-outros' };
   Object.entries(sections).forEach(([cat, listId]) => {
     const el = document.getElementById(listId);
     if (!el) return;

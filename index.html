@@ -40,7 +40,7 @@
       <button class="cat-tab" data-sec="sec-mac">Macarronadas</button>
       <button class="cat-tab" data-sec="sec-acai">Açaí</button>
       <button class="cat-tab" data-sec="sec-beb">Bebidas</button>
-      <button class="cat-tab" data-sec="sec-horarios">Horários</button>
+      <button class="cat-tab" data-sec="sec-outros">Outros</button>
     </div>
   </div>
 </header>
@@ -106,16 +106,17 @@
     <div class="item-list section-items" id="items-beb"></div>
   </div>
 
+
+
   <div class="section-divider"></div>
 
-  <!-- HORÁRIOS -->
-  <div id="sec-horarios">
+  <!-- OUTROS -->
+  <div id="sec-outros">
     <div class="section-head">
-      <div class="section-title">Horários</div>
+      <div class="section-title" style="color:#5B4FCF">Outros</div>
+      <button class="section-toggle" onclick="toggleSection('items-outros',this)">▲</button>
     </div>
-    <div class="schedule-wrap">
-      <div id="scheduleRows"></div>
-    </div>
+    <div class="item-list section-items" id="items-outros"></div>
   </div>
 
 </main>

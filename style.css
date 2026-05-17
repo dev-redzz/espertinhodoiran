@@ -812,3 +812,6 @@ body {
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* Outros category */
+.item-thumb.outros-bg { background: linear-gradient(135deg,#F0EBF8,#DDD0F8); }
