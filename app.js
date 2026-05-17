@@ -222,7 +222,7 @@ const MENU = [
     desc: 'Fruta amazônica cremosa e deliciosa.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   {
     id: 52, cat: 'beb',
@@ -230,7 +230,7 @@ const MENU = [
     desc: 'Maracujá fresco, gelado e refrescante.',
     price: 9, emoji: '🍹', badge: 'hot',
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   {
     id: 53, cat: 'beb',
@@ -238,7 +238,7 @@ const MENU = [
     desc: 'Cajá com sabor único do nordeste.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   {
     id: 54, cat: 'beb',
@@ -246,7 +246,7 @@ const MENU = [
     desc: 'Sabor intenso e aromático da Amazônia.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   /* Grupo 2: R$7 (400ml) · R$27 (Jarra 1L) */
   {
@@ -255,7 +255,7 @@ const MENU = [
     desc: 'Goiaba vermelha, cremosa e adocicada.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   {
     id: 56, cat: 'beb',
@@ -263,7 +263,7 @@ const MENU = [
     desc: 'Rico em vitamina C, refrescante e saboroso.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   {
     id: 59, cat: 'beb',
@@ -271,7 +271,7 @@ const MENU = [
     desc: 'Caju nordestino fresquinho, sem conservante.',
     price: 9, emoji: '🍹', badge: null,
     img: null,
-    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 },{ label:'Jarra 1L', price:35 }],
+    sizes: [{ label:'Normal', price:9 },{ label:'Com Leite', price:11 }],
   },
   // ── Refrigerantes ──
   {
